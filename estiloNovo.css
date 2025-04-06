@@ -5,20 +5,6 @@
     box-sizing: border-box;
 }
 
-/* body {
-    background: linear-gradient(135deg, #f0f9ff 0%, #e1f5fe 50%, #b3e5fc 100%);
-    background-attachment: fixed;
-    background-size: cover;
-    font-family: 'Inter', Arial, sans-serif;
-    color: #2c3e50;
-    min-height: 100vh;
-    margin: 0;
-    padding: 20px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-} */
-
 body {
     background: url('/imagens/fundo.png') no-repeat center center fixed;
     background-size: cover;
@@ -47,6 +33,17 @@ body {
     text-align: center;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
     margin: 0 auto;
+}
+
+.cad-container {
+    width: 400px;
+    max-width: 90%;
+    padding: 2rem;
+    background-color: rgba(255, 255, 255, 0.95);
+    border-radius: 12px;
+    text-align: center;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    margin: 80px auto 20px auto; /* Margem superior para compensar a navbar */
 }
 
 /* ===== GRID LAYOUT ===== */
