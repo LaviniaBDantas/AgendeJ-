@@ -11,58 +11,6 @@
     <link rel="stylesheet" href="estiloNovo.css" type="text/css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
-    <!-- <style>
-         .navbar-custom {
-            background: linear-gradient(90deg, #11dadc, #0987d9);
-            padding: 20px 0; 
-        }
-        .navbar-custom .navbar-brand, .navbar-custom .nav-link {
-            color: white !important;
-            font-size: 1.2rem;
-        }
-        .navbar-custom .nav-link:hover {
-            color: #f8f9fa !important;
-        }
-        .hero-section {
-            background: url('https://via.placeholder.com/1500x500') no-repeat center center/cover;
-            padding: 80px 0;
-            color: white;
-            text-align: center;
-        }
-        .search-section {
-            background-color: #87CEEB; /* Azul claro */
-            padding: 20px;
-            border-radius: 10px;
-        }
-        .featured-section {
-            padding: 30px 0;
-        }
-        .card {
-            transition: transform 0.3s;
-        }
-        .card:hover {
-            transform: scale(1.05);
-        }
-        .about-section {
-            background-color: #f8f9fa;
-            padding: 50px 0;
-            text-align: center;
-        }
-        .footer {
-            background-color: #395572;
-            color: white;
-            padding: 20px 0;
-            text-align: center;
-        }
-        .form-section {
-            padding: 50px 0;
-            background-color: #f8f9fa;
-        }
-        .form-section .form-control {
-            margin-bottom: 15px;
-        }
-    </style> -->
 </head>
 
 <body>
@@ -100,10 +48,10 @@
     <section class="form-section">
         <div class="login-container">
             <h1>Agendamento</h1>
-            <form>
+            <form action="agendamento.php" method="POST">
                 <!-- Especialidade -->
                 <div class="mb-3">
-                    <select class="form-select" id="especialidade" required>
+                    <select class="form-select" id="especialidade" name="especialidade" required>
                         <option value="" disabled selected>Selecione uma especialidade</option>
                         <option value="cardiologia">Cardiologia</option>
                         <option value="dermatologia">Dermatologia</option>
@@ -115,9 +63,9 @@
 
                 <!-- Médico -->
                 <div class="mb-3">
-                    <select class="form-select" id="medico" required>
+                    <select class="form-select" id="medico" name="medico" required>
                         <option value="" disabled selected>Selecione um médico</option>
-                        <option value="dr_carlos">Dr. Carlos Silva</option>
+                        <option value="Dr. Carlos Silva">Dr. Carlos Silva</option>
                         <option value="dra_ana">Dra. Ana Souza</option>
                         <option value="dr_pedro">Dr. Pedro Costa </option>
                         <option value="dra_maria">Dra. Maria Fernandes </option>
@@ -125,14 +73,9 @@
                     </select>
                 </div>
 
-                <!-- Data -->
+                <!-- Data e Hora combinadas -->
                 <div class="mb-3">
-                    <input type="date" class="form-control" id="data" required>
-                </div>
-
-                <!-- Hora -->
-                <div class="mb-3">
-                    <input type="time" class="form-control" id="hora" required>
+                    <input type="datetime-local" class="form-control" id="data_hora" name="data_hora" required>
                 </div>
 
                 <!-- Botão de Agendar -->

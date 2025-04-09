@@ -1,3 +1,26 @@
+<?php
+    $servername = "localhost";
+    $usuario = "root";
+    $senha = "";
+    $banco = "agendeja";
+
+    $conexao = new mysqli($servername, $usuario, $senha,$banco);
+    if ($conexao->connect_error) {
+        die("Erro de conexao! ". $conexao->connecr_error);
+    }
+    if ($_SERVER["REQUEST_METHOD"] == "GET") {
+        $sql = "SELECT * FROM consulta WHERE cpf_paciente = 1";
+        $result = $conexao->query($sql);
+    
+        if (!$result) {
+            die("Erro na consulta: " . $conexao->error); // Mostra o erro do MySQL
+        }
+    }
+?>
+
+
+
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 
@@ -82,10 +105,10 @@
             </div>
 
             <!-- Card de Consultas Agendadas -->
-            <div class="card card-consultas">
+             <div class="card card-consultas">
                 <h2 class="titulo-card">Consultas Agendadas</h2>
 
-                <div class="consultas-lista">
+                <!-- <div class="consultas-lista">
                     <div class="consulta-item">
                         <div class="consulta-info">
                             <h3 class="consulta-especialidade">Clínico Geral</h3>
@@ -107,30 +130,36 @@
                             <span class="badge badge-confirmada">Confirmada</span>
                             <div class="botoes-grupo"></div>
                         </div>
-                    </div>
+                    </div> -->
+                    <?php while ($row = $result->fetch_assoc()){ 
 
-                    <div class="consulta-item">
-                        <div class="consulta-info">
-                            <h3 class="consulta-especialidade">Cardiologia</h3>
-                            <p class="consulta-medico">Dra. Ana Oliveira</p>
+                        $sqlInfoMedico = "SELECT nome, especialidade FROM medico WHERE crm=".$row['crm_medico'];
+                        $resultadoInfoMed = $conexao->query($sqlInfoMedico);
+                        while($r=$resultadoInfoMed->fetch_assoc()){
+                            $especialidade=$r['especialidade'];
+                            $nome=$r['nome'];
+                        }
 
-                            <div class="consulta-detalhes">
-                                <div class="consulta-data">
-                                    <i class="fas fa-calendar-alt icone-pequeno"></i>
-                                    <span class="dado-valor">22/04/2025</span>
-                                </div>
-                                <div class="consulta-horario">
-                                    <i class="fas fa-clock icone-pequeno"></i>
-                                    <span class="dado-valor">10:15</span>
+                        ?>
+                        <div class="consulta-item">
+                            <div class="consulta-info">
+                                <h3 class="consulta-especialidade"> <?=$especialidade?></h3>
+                                <p class="consulta-medico"><?=$nome?></p>
+
+                                <div class="consulta-detalhes">
+                                    <div class="consulta-data">
+                                        <i class="fas fa-calendar-alt icone-pequeno"></i>
+                                        <span class="dado-valor"><?= $row['data_hora'] ?></span>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
 
-                        <div class="consulta-acoes">
-                            <span class="badge badge-pendente">Pendente</span>
+                            <div class="consulta-acoes">
+                                <span class="badge badge-pendente">Pendente</span>
+                            </div>
                         </div>
-                    </div>
-                </div>
+                    <?php } ?>    
+                </div> -->
 
                 <a class="botao botao-full" href="Agendamento.html">Agendar Nova Consulta</a>
             </div>

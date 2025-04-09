@@ -2,8 +2,8 @@
 
 $host = 'localhost';
 $db = 'agendeja';
-$user = 'root'; // altere conforme necessário
-$pass = ''; // altere conforme necessário
+$user = 'root'; 
+$pass = ''; 
 
 try {
     $pdo = new PDO("mysql:host=$host;dbname=$db", $user, $pass);
