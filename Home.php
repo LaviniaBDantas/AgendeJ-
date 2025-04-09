@@ -1,3 +1,12 @@
+<?php
+include 'db.php'; // Inclui a conexão com o banco
+
+// Processa a busca se o formulário foi enviado
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['especialidade'])) {
+    header("Location: medicoEspecialista.php?especialidade=" . urlencode($_POST['especialidade']));
+    exit();
+}
+?>
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -59,8 +68,8 @@
     <nav class="navbar navbar-expand-lg navbar-custom">
         <div class="container-fluid"> 
 
-            <a class="navbar-brand" href="Home.html ">
-                <img src="/imagens/logo.png" alt="" height="50" class="d-inline-block align-top">
+            <a class="navbar-brand" href="Home.php ">
+                <img src="imagens/logo.png" alt="" height="50" class="d-inline-block align-top">
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -84,7 +93,7 @@
         </div>
     </nav>
 
-    <!-- Hero Section -->
+    <!-- Hero Section - Modifique o form -->
     <section class="hero-section">
         <div class="container">
             <h1>Encontre médicos e marque consultas</h1>
@@ -92,9 +101,9 @@
             <div class="row justify-content-center">
                 <div class="col-md-8">
                     <div class="search-section">
-                        <form>
+                        <form method="POST" action="">
                             <div class="input-group mb-3">
-                                <input type="text" class="form-control" placeholder="Pesquisar especialidade" aria-label="Especialidade">
+                                <input type="text" class="form-control" name="especialidade" placeholder="Pesquisar especialidade" required>
                                 <button class="btn btn-primary" type="submit">Buscar</button>
                             </div>
                         </form>
@@ -111,7 +120,7 @@
             <div class="row">
                 <div class="col-md-4">
                     <div class="card">
-                        <img src="/imagens/cardiologista.jpeg" class="card-img-top" alt="Cardiologia">
+                        <img src="imagens/cardiologista.jpeg" class="card-img-top" alt="Cardiologia">
                         <div class="card-body">
                             <h5 class="card-title">Cardiologia</h5>
                             <p class="card-text">Encontre os melhores cardiologistas perto de você.</p>
@@ -121,7 +130,7 @@
                 </div>
                 <div class="col-md-4">
                     <div class="card">
-                        <img src="/imagens/dermatologia.png" class="card-img-top" alt="Dermatologia">
+                        <img src="imagens/dermatologia.png" class="card-img-top" alt="Dermatologia">
                         <div class="card-body">
                             <h5 class="card-title">Dermatologia</h5>
                             <p class="card-text">Cuide da sua pele com os melhores dermatologistas.</p>
@@ -131,7 +140,7 @@
                 </div>
                 <div class="col-md-4">
                     <div class="card">
-                        <img src="/imagens/pediatra.jpg" class="card-img-top" alt="Pediatria">
+                        <img src="imagens/pediatra.jpg" class="card-img-top" alt="Pediatria">
                         <div class="card-body">
                             <h5 class="card-title">Pediatria</h5>
                             <p class="card-text">Encontre pediatras experientes para cuidar do seu filho.</p>
