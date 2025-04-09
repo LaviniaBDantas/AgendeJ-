@@ -630,3 +630,49 @@ body.with-navbar {
     margin-top: 3rem;
     margin-right: 10rem;
 }
+
+/* Estilos para edição de dados */
+.botao-editar {
+    background: transparent;
+    border: none;
+    color: #2a6496;
+    cursor: pointer;
+    font-size: 0.9rem;
+    margin-left: auto;
+    padding: 5px 10px;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+}
+
+.botao-editar:hover {
+    background-color: #f0f0f0;
+}
+
+.botao-editar.editando-ativo {
+    background-color: #2a6496;
+    color: white;
+}
+
+.botao-editar i {
+    margin-right: 5px;
+}
+
+.perfil-container {
+    display: flex;
+    align-items: center;
+}
+
+.dado-editavel-conteudo[contenteditable="true"] {
+    border-bottom: 1px dashed #2a6496;
+    padding: 2px 4px;
+    outline: none;
+    background-color: #f8f9fa;
+    border-radius: 3px;
+    min-width: 200px;
+    display: inline-block;
+}
+
+.dado-editavel-conteudo[contenteditable="true"]:focus {
+    background-color: #fff;
+    border-bottom: 1px solid #2a6496;
+}
