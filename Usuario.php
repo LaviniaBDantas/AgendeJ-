@@ -105,64 +105,47 @@
             </div>
 
             <!-- Card de Consultas Agendadas -->
-             <div class="card card-consultas">
-                <h2 class="titulo-card">Consultas Agendadas</h2>
+<div class="card card-consultas">
+    <h2 class="titulo-card">Consultas Agendadas</h2>
 
-                <!-- <div class="consultas-lista">
-                    <div class="consulta-item">
-                        <div class="consulta-info">
-                            <h3 class="consulta-especialidade">Clínico Geral</h3>
-                            <p class="consulta-medico">Dr. João Santos</p>
+    <div class="consultas-lista">
 
-                            <div class="consulta-detalhes">
-                                <div class="consulta-data">
-                                    <i class="fas fa-calendar-alt icone-pequeno"></i>
-                                    <span class="dado-valor">15/04/2025</span>
-                                </div>
-                                <div class="consulta-horario">
-                                    <i class="fas fa-clock icone-pequeno"></i>
-                                    <span class="dado-valor">14:30</span>
-                                </div>
-                            </div>
+        <?php while ($row = $result->fetch_assoc()){ 
+
+            $sqlInfoMedico = "SELECT nome, especialidade FROM medico WHERE crm=".$row['crm_medico'];
+            $resultadoInfoMed = $conexao->query($sqlInfoMedico);
+            while($r=$resultadoInfoMed->fetch_assoc()){
+                $especialidade=$r['especialidade'];
+                $nome=$r['nome'];
+            }
+
+            ?>
+            <div class="consulta-item">
+                <div class="consulta-info">
+                    <h3 class="consulta-especialidade"> <?=$especialidade?></h3>
+                    <p class="consulta-medico"><?=$nome?></p>
+
+                    <div class="consulta-detalhes">
+                        <div class="consulta-data">
+                            <i class="fas fa-calendar-alt icone-pequeno"></i>
+                            <span class="dado-valor"><?= $row['data_hora'] ?></span>
                         </div>
+                    </div>
+                </div>
 
-                        <div class="consulta-acoes">
-                            <span class="badge badge-confirmada">Confirmada</span>
-                            <div class="botoes-grupo"></div>
-                        </div>
-                    </div> -->
-                    <?php while ($row = $result->fetch_assoc()){ 
-
-                        $sqlInfoMedico = "SELECT nome, especialidade FROM medico WHERE crm=".$row['crm_medico'];
-                        $resultadoInfoMed = $conexao->query($sqlInfoMedico);
-                        while($r=$resultadoInfoMed->fetch_assoc()){
-                            $especialidade=$r['especialidade'];
-                            $nome=$r['nome'];
-                        }
-
-                        ?>
-                        <div class="consulta-item">
-                            <div class="consulta-info">
-                                <h3 class="consulta-especialidade"> <?=$especialidade?></h3>
-                                <p class="consulta-medico"><?=$nome?></p>
-
-                                <div class="consulta-detalhes">
-                                    <div class="consulta-data">
-                                        <i class="fas fa-calendar-alt icone-pequeno"></i>
-                                        <span class="dado-valor"><?= $row['data_hora'] ?></span>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="consulta-acoes">
-                                <span class="badge badge-pendente">Pendente</span>
-                            </div>
-                        </div>
-                    <?php } ?>    
-                </div> -->
-
-                <a class="botao botao-full" href="pagAgendamento.php">Agendar Nova Consulta</a>
+                <div class="consulta-acoes">
+                    <span class="badge badge-pendente">Pendente</span>
+                    <!-- Botão de deletar consulta -->
+                    <a href="deletar_consulta.php?id_consulta=<?= $row['id_consulta'] ?>" class="botao botao-deletar" onclick="return confirm('Tem certeza que deseja cancelar esta consulta?');">
+                        <i class="fas fa-trash-alt"></i> Cancelar
+                    </a>
+                </div>
             </div>
+        <?php } ?>    
+    </div>
+
+    <a class="botao botao-full" href="pagAgendamento.php">Agendar Nova Consulta</a>
+</div>
         </div>
     </main>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
