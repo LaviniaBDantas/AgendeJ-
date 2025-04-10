@@ -161,7 +161,7 @@
                     <?php } ?>    
                 </div> -->
 
-                <a class="botao botao-full" href="Agendamento.html">Agendar Nova Consulta</a>
+                <a class="botao botao-full" href="pagAgendamento.php">Agendar Nova Consulta</a>
             </div>
         </div>
     </main>
