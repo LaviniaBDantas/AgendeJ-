@@ -64,9 +64,31 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-    <!-- Navbar (mantido igual) -->
     <nav class="navbar navbar-expand-lg navbar-custom">
-        <!-- ... conteúdo existente ... -->
+        <div class="container-fluid">
+            <a class="navbar-brand" href="Home.php">
+                <img src="imagens/logo.png" alt="" height="50" class="d-inline-block align-top">
+            </a>
+                        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <!-- <li class="nav-item">
+                        <a class="nav-link" href="Home.html">Home</a>
+                    </li> -->
+                    <li class="nav-item">
+                        <a class="nav-link" href="pagAgendamento.php">Agendar</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="Login.html">Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="Usuario.php">Meus Dados</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
     </nav>
 
     <!-- Form Section -->

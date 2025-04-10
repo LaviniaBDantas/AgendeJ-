@@ -16,9 +16,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['especialidade'])) {
     
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
-<style>
+    <style>
         .navbar-custom {
             background: linear-gradient(90deg, #11dadc, #0987d9);
             padding: 20px 0; 
@@ -31,15 +31,70 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['especialidade'])) {
             color: #f8f9fa !important;
         }
         .hero-section {
-            background: url('https://via.placeholder.com/1500x500') no-repeat center center/cover;
-            padding: 80px 0; /* Reduzi o padding para diminuir a distância */
-            color: white;
-            text-align: center;
+            background:linear-gradient(90deg, #11dadc, #0987d9), url('https://images.unsplash.com/photo-1631815588090-d1bcbe9b4b59?q=80&w=1920&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center;
+            padding: 100px 0 120px;
+            position: relative;
         }
-        .search-section {
-            background-color: #87CEEB; /* Azul claro */
-            padding: 20px;
-            border-radius: 10px;
+        .search-container {
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+            top: 40px;
+        }
+        
+        .search-box {
+            background-color: #ffffff;
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            position: relative;
+            z-index: 10;
+        }
+        
+        .search-title {
+            color: #2c3e50;
+            font-weight: 600;
+            margin-bottom: 20px;
+            font-size: 1.2rem;
+        }
+        
+        .search-input-container {
+            position: relative;
+        }
+        
+        .search-input {
+            padding-left: 45px;
+            height: 55px;
+            font-size: 1.1rem;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+        }
+        
+        .search-icon {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #4299e1;
+            font-size: 1.2rem;
+        }
+        
+        .search-button {
+            height: 55px;
+            font-size: 1.1rem;
+            font-weight: 500;
+            padding: 0 30px;
+            background-color: #4299e1;
+            border: none;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+        
+        .search-button:hover {
+            background-color: #3182ce;
+            transform: translateY(-2px);
         }
         .featured-section {
             padding: 30px 0; /* Reduzi o padding para diminuir a distância */
@@ -56,7 +111,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['especialidade'])) {
             text-align: center;
         }
         .footer {
-            background-color: #395572;
+            background-color: #4299e1;
             color: white;
             padding: 20px 0;
             text-align: center;
@@ -68,7 +123,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['especialidade'])) {
     <nav class="navbar navbar-expand-lg navbar-custom">
         <div class="container-fluid"> 
 
-            <a class="navbar-brand" href="Home.php ">
+            <a class="navbar-brand" href="Home.php">
                 <img src="imagens/logo.png" alt="" height="50" class="d-inline-block align-top">
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -76,38 +131,46 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['especialidade'])) {
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
-                    <!-- <li class="nav-item">
-                        <a class="nav-link" href="Home.html">Home</a>
-                    </li> -->
                     <li class="nav-item">
-                        <a class="nav-link" href="Agendamento.html">Agendar</a>
+                        <a class="nav-link" href="pagAgendamento.php">Agendar</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="Login.html">Login</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="Usuario.html">Meus Dados</a>
+                        <a class="nav-link" href="Usuario.php">Meus Dados</a>
                     </li>
                 </ul>
             </div>
         </div>
     </nav>
 
-    <!-- Hero Section - Modifique o form -->
+    <!-- Hero Section -->
     <section class="hero-section">
         <div class="container">
-            <h1>Encontre médicos e marque consultas</h1>
-            <p>Agende consultas online e encontre os melhores profissionais de saúde.</p>
-            <div class="row justify-content-center">
-                <div class="col-md-8">
-                    <div class="search-section">
-                        <form method="POST" action="">
-                            <div class="input-group mb-3">
-                                <input type="text" class="form-control" name="especialidade" placeholder="Pesquisar especialidade" required>
-                                <button class="btn btn-primary" type="submit">Buscar</button>
+            <div class="row">
+                <div class="col-lg-8 mx-auto text-center">
+                    <h1 class="display-4 fw-bold mb-3">Cuidando da sua saúde com facilidade</h1>
+                    <p class="lead mb-5">Encontre os melhores médicos e agende consultas online de forma rápida e segura.</p>
+                </div>
+            </div>
+            
+            <div class="search-container">
+                <div class="search-box">
+                    <h3 class="search-title">Encontre a especialidade médica que você precisa</h3>
+                    <form method="POST" action="">
+                        <div class="row g-3">
+                            <div class="col-md-9">
+                                <div class="search-input-container">
+                                    <i class="fas fa-search search-icon"></i>
+                                    <input type="text" class="form-control search-input" name="especialidade" placeholder="Buscar por especialidade" required>
+                                </div>
                             </div>
-                        </form>
-                    </div>
+                            <div class="col-md-3">
+                                <button type="submit" class="btn btn-primary search-button w-100">Buscar</button>
+                            </div>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
@@ -152,7 +215,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['especialidade'])) {
         </div>
     </section>
 
-    
     <section class="about-section">
         <div class="container">
             <h2 class="text-center mb-4">Sobre Nós</h2>

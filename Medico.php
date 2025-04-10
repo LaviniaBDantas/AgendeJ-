@@ -84,7 +84,7 @@ $avaliacoes = $stmtAvaliacoes->fetchAll();
             </div>
             <div class="agendamento-col">
                 <i class="fas fa-calendar-check icone-agendamento"></i>
-                <a href="agendamento.html?medico=<?= $medico['crm'] ?>" class="botao">
+                <a href="pagAgendamento.php?medico=<?= $medico['crm'] ?>" class="botao">
                     Agendar Consulta
                 </a>
             </div>
