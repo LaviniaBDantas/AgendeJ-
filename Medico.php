@@ -113,7 +113,7 @@ $avaliacoes = $stmtAvaliacoes->fetchAll();
                     <?php endforeach; ?>
                 </div>
             <?php else: ?>
-                <p class="texto">Este médico ainda não recebeu avaliações.</p>
+                <p class="consulta-medico">Este médico ainda não recebeu avaliações.</p>
             <?php endif; ?>
         </div>
     </div>

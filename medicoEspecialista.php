@@ -67,13 +67,13 @@ $medicos = $stmt->fetchAll();
                 <div class="collapse navbar-collapse" id="navbarNav">
                     <ul class="navbar-nav ms-auto">
                         <li class="nav-item">
-                            <a class="nav-link" href="Agendamento.html">Agendar</a>
+                            <a class="nav-link" href="pagAgendamento.php">Agendar</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="Login.html">Login</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="Usuario.html">Meus Dados</a>
+                            <a class="nav-link" href="Usuario.php">Meus Dados</a>
                         </li>
                     </ul>
                 </div>
