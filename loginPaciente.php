@@ -1,3 +1,35 @@
+<?php
+session_start();
+include 'db.php';
+
+$error = '';
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $email = $_POST['email'];
+    $senha = $_POST['password'];
+
+    try {
+        $stmt = $pdo->prepare("SELECT * FROM paciente WHERE email = ?");
+        $stmt->execute([$email]);
+
+        if ($stmt->rowCount() == 1) {
+            $usuario = $stmt->fetch(PDO::FETCH_ASSOC);
+
+            if (password_verify($senha, $usuario['senha'])) {
+                $_SESSION['paciente'] = $usuario['cpf']; // ou outro dado para sessão
+                header("Location: Home.php");
+                exit();
+            } else {
+                $error = "Senha incorreta.";
+            }
+        } else {
+            $error = "E-mail não encontrado.";
+        }
+    } catch (PDOException $e) {
+        $error = "Erro no banco de dados: " . $e->getMessage();
+    }
+}
+?>
 <!DOCTYPE html>
 <html>
 
@@ -31,7 +63,7 @@
                         <a class="nav-link" href="Usuario.php">Meus Dados</a>
                     </li>
                     <li class="nav-item">
-                        <select class="login-select form-select" onchange="window.location.href=this.value" Login>
+                        <select class="login-select form-select" onchange="window.location.href=this.value">
                             <option class="item-login" value="">Login</option>
                             <option class="item-login" value="loginMedico.php">Médico</option>
                             <option class="item-login" value="loginPaciente.php">Paciente</option>
@@ -41,20 +73,23 @@
             </div>
         </div>
     </nav>
+
     <div class="login-container">
         <h1> Faça seu login </h1>
-        <form>
-            <input type="email" id="email" name="email" placeholder="Digite seu E-mail">
-            <br>
-            <br>
-            <input type="password" id="password" name="password" placeholder="Digite sua Senha">
-            <br>
-            <br>
+        <?php if ($error): ?>
+            <div class="alert alert-danger"><?php echo $error; ?></div>
+        <?php endif; ?>
+        <form method="POST" action="loginPaciente.php">
+            <input type="email" id="email" name="email" placeholder="Digite seu E-mail" required>
+            <br><br>
+            <input type="password" id="password" name="password" placeholder="Digite sua Senha" required>
+            <br><br>
             <button type="submit" class="botao">Entrar</button>
             <br>
             <a href="Cadastro.html" class="botao">Criar cadastro</a>
         </form>
     </div>
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
