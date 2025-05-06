@@ -87,7 +87,7 @@ elseif (isset($_SESSION['crm'])) {
                 <img src="imagens/logo.png" alt="" height="50" class="d-inline-block align-top">
             </a>
             <a href="logout.php" class="botao-logout ms-auto" title="Sair">
-                <span class="material-icons">logout</span>
+                <span class="material-icons" style="color: white;">logout</span>
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -116,10 +116,6 @@ elseif (isset($_SESSION['crm'])) {
     <main class="container"></nav>
     <main class="container">
         <h1 class="titulo-principal"><?= $titulo ?></h1>
-
-
-
-
         <div class="grid-container">
             <!-- Card Dados -->
             <div class="card card-dados">
