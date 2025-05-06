@@ -7,7 +7,7 @@ $success = '';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $cpf = $_POST['cpf'];
-    $senha = password_hash($cpf, PASSWORD_DEFAULT); // CPF como senha padrão
+    $senha = password_hash($_POST['senha'], PASSWORD_DEFAULT);//senha
     $nome = $_POST['nome'];
     $endereco = $_POST['endereco'];
     $telefone = $_POST['telefone'];
@@ -108,6 +108,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <option value="Nenhum">Não possuo convênio</option>
             </select><br>
             <input type="email" id="email" name="email" placeholder="Digite seu E-mail" required><br>
+            <input type="password" id="senha" name="senha" placeholder="Digite sua Senha" required><br>
             <button type="submit" class="botao">Cadastrar</button>
         </form>
     </div>

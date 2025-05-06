@@ -5,19 +5,19 @@ include 'db.php';
 $error = '';
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $email = $_POST['email'];
+    $cpf = $_POST['cpf'];
     $senha = $_POST['password'];
 
     try {
-        $stmt = $pdo->prepare("SELECT * FROM paciente WHERE email = ?");
-        $stmt->execute([$email]);
+        // Busca paciente pelo CPF
+        $stmt = $pdo->prepare("SELECT * FROM paciente WHERE cpf = ?");
+        $stmt->execute([$cpf]);
 
         if ($stmt->rowCount() == 1) {
             $paciente = $stmt->fetch(PDO::FETCH_ASSOC);
 
+            // Verifica a senha
             if (password_verify($senha, $paciente['senha'])) {
-
-                //Login bem sucedido
                 $_SESSION['cpf'] = $paciente['cpf'];
                 $_SESSION['nome'] = $paciente['nome'];
 
@@ -27,7 +27,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $error = "Senha incorreta.";
             }
         } else {
-            $error = "E-mail não encontrado.";
+            $error = "CPF não encontrado.";
         }
     } catch (PDOException $e) {
         $error = "Erro no banco de dados: " . $e->getMessage();
@@ -64,7 +64,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         <a class="nav-link" href="pagAgendamento.php">Agendar</a>
                     </li>
                     <li class="nav-item">
-                    <a class="nav-link" href="meusDados.php">Meus Dados</a>
+                        <a class="nav-link" href="meusDados.php">Meus Dados</a>
                     </li>
                     <li class="nav-item">
                         <select class="login-select form-select" onchange="window.location.href=this.value">
@@ -84,9 +84,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <div class="alert alert-danger"><?php echo $error; ?></div>
         <?php endif; ?>
         <form method="POST" action="loginPaciente.php">
-            <input type="email" id="email" name="email" placeholder="Digite seu E-mail" required>
+            <input type="text" id="cpf" name="cpf" placeholder="Digite seu CPF" required>
             <br><br>
-            <input type="password" id="password" name="password" placeholder="Digite seu cpf" required>
+            <input type="password" id="password" name="password" placeholder="Digite sua senha" required>
             <br><br>
             <button type="submit" class="botao">Entrar</button>
             <br>
