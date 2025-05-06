@@ -43,6 +43,26 @@ elseif (isset($_SESSION['crm'])) {
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
+    <style>
+        .card-consultas .badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: white;
+        }
+
+        .card-consultas .badge-confirmado {
+            background-color: #28a745;
+        }
+
+        .card-consultas .badge-pendente {
+            background-color: #ed8936;
+        }
+    </style>
+
+
 </head>
 
 <body>

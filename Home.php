@@ -241,7 +241,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['especialidade'])) {
                         <img src="imagens/pediatra.jpg" class="card-img-top" alt="Pediatria">
                         <div class="card-body">
                             <h5 class="card-title">Pediatria</h5>
-                            <p class="card-text">Encontre pediatras experientes para cuidar do seu filho.</p>
+                            <p class="card-text">Cuidados pediátricos com profissionais experientes.</p>
                             <a href="medicoEspecialista.php?especialidade=Pediatria" class="btn btn-primary">Ver mais </a>
                         </div>
                     </div>
