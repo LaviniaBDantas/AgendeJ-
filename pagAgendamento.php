@@ -1,13 +1,15 @@
 <?php
-$servername = "localhost";
-$usuario = "root";
-$senha = "";
-$banco = "agendeja";
+session_start();
 
-$conexao = new mysqli($servername, $usuario, $senha, $banco);
-if ($conexao->connect_error) {
-    die("Erro de conexão: " . $conexao->connect_error);
-}
+$servername = "localhost";
+    $usuario = "root";
+    $senha = "";
+    $banco = "agendeja";
+
+    $conexao = new mysqli($servername, $usuario, $senha,$banco);
+    if ($conexao->connect_error) {
+        die("Erro de conexao! ". $conexao->connecr_error);
+    }
 
 // Verificar se veio da página do médico
 $crm_medico = isset($_GET['medico']) ? intval($_GET['medico']) : 0;
@@ -18,24 +20,29 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['data_hora']) && isset(
     $nome_medico = $conexao->real_escape_string($_POST['medico']);
     $data_hora = $conexao->real_escape_string($_POST['data_hora']);
 
-    $resultado = $conexao->query("SELECT crm FROM medico WHERE nome='$nome_medico'");
+    // Verifica se o paciente está logado
+    if (!isset($_SESSION['cpf'])) {
+        $erro = "Você precisa estar logado como paciente para agendar uma consulta.";
+    } else {
+        $cpf_paciente = $conexao->real_escape_string($_SESSION['cpf']);
 
-    if ($resultado && $resultado->num_rows > 0) {
-        $linha = $resultado->fetch_assoc();
-        $crm_medico = $linha['crm'];
+        $resultado = $conexao->query("SELECT crm FROM medico WHERE nome='$nome_medico'");
+        if ($resultado && $resultado->num_rows > 0) {
+            $linha = $resultado->fetch_assoc();
+            $crm_medico = $linha['crm'];
 
-        $sql = "INSERT INTO consulta(crm_medico, cpf_paciente, data_hora) 
-                VALUES ('$crm_medico', 1, '$data_hora')";
+            $sql = "INSERT INTO consulta(crm_medico, cpf_paciente, data_hora) 
+                    VALUES ('$crm_medico', '$cpf_paciente', '$data_hora')";
 
-        if ($conexao->query($sql) === TRUE) {
-            header("Location: Usuario.php");
-            exit;
-        } else {
-            $erro = "Erro ao cadastrar consulta: " . $conexao->error;
+            if ($conexao->query($sql) === TRUE) {
+                header("Location: meusDados.php");
+                exit;
+            } else {
+                $erro = "Erro ao cadastrar consulta: " . $conexao->error;
+            }
         }
     }
 }
-
 // Buscar médico específico se veio da página do médico
 $medico_selecionado = null;
 if ($crm_medico > 0) {
@@ -101,7 +108,7 @@ if (!empty($especialidade_para_busca)) {
                         <a class="nav-link" href="pagAgendamento.php">Agendar</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="Usuario.php">Meus Dados</a>
+                        <a class="nav-link" href="meusDados.php">Meus Dados</a>
                     </li>
                     <li class="nav-item">
                         <select class="login-select form-select" onchange="window.location.href=this.value" Login>

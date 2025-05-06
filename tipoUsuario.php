@@ -1,41 +1,3 @@
-<?php
-session_start();
-include 'db.php';
-
-$error = '';
-
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $crm = $_POST['crm']; // Corrigido para pegar o campo correto
-    $senha = $_POST['password'];
-
-    try {
-        // Buscar médico no banco de dados
-        $stmt = $pdo->prepare("SELECT * FROM medico WHERE crm = ?");
-        $stmt->execute([$crm]);
-        $medico = $stmt->fetch(PDO::FETCH_ASSOC);
-
-        if ($medico) {
-            // Verificar a senha com password_verify()
-            if (password_verify($senha, $medico['senha'])) {
-
-                //Login bem sucedido
-                $_SESSION['crm'] = $medico['crm'];
-                $_SESSION['nome'] = $medico['nome'];
-
-                // Redirecionar para área restrita
-                header("Location: home.php");
-                exit();
-            } else {
-                $error = "CRM ou senha incorretos!";
-            }
-        } else {
-            $error = "CRM não encontrado!";
-        }
-    } catch (PDOException $e) {
-        $error = "Erro no sistema: " . $e->getMessage();
-    }
-}
-?>
 
 <!DOCTYPE html>
 <html>
@@ -64,7 +26,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         <a class="nav-link" href="pagAgendamento.php">Agendar</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="meusDados.php">Meus Dados</a>
+                    <a class="nav-link" href="meusDados.php">Meus Dados</a>
                     </li>
                     <li class="nav-item">
                         <select class="login-select form-select" onchange="window.location.href=this.value" Login>
@@ -86,16 +48,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <div class="alert alert-danger"><?php echo htmlspecialchars($error); ?></div>
         <?php endif; ?>
         
-        <!-- Formulário corrigido -->
-        <form method="POST" action="<?php echo htmlspecialchars($_SERVER['PHP_SELF']); ?>">
-            <input type="text" id="crm" name="crm" placeholder="Digite seu CRM" required>
-            <br><br>
-            <input type="password" id="password" name="password" placeholder="Digite sua Senha" required>
-            <br><br>
-            <button type="submit" class="botao">Entrar</button> 
             <br>
-            <a href="cadastroMedico.php" class="botao">Primeiro acesso</a>
-        </form>
+            <a href="loginMedico.php" class="botao">Médico</a>
+            <br>
+            <a href="loginPaciente.php" class="botao">Paciente</a>
     </div> 
 </body>
 </html>

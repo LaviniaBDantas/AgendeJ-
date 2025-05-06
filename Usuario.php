@@ -1,21 +1,21 @@
-<?php
-    $servername = "localhost";
-    $usuario = "root";
-    $senha = "";
-    $banco = "agendeja";
+<!-- <?php
+    // $servername = "localhost";
+    // $usuario = "root";
+    // $senha = "";
+    // $banco = "agendeja";
 
-    $conexao = new mysqli($servername, $usuario, $senha,$banco);
-    if ($conexao->connect_error) {
-        die("Erro de conexao! ". $conexao->connecr_error);
-    }
-    if ($_SERVER["REQUEST_METHOD"] == "GET") {
-        $sql = "SELECT * FROM consulta WHERE cpf_paciente = 1";
-        $result = $conexao->query($sql);
+    // $conexao = new mysqli($servername, $usuario, $senha,$banco);
+    // if ($conexao->connect_error) {
+    //     die("Erro de conexao! ". $conexao->connecr_error);
+    // }
+    // if ($_SERVER["REQUEST_METHOD"] == "GET") {
+    //     $sql = "SELECT * FROM consulta WHERE cpf_paciente = 1";
+    //     $result = $conexao->query($sql);
     
-        if (!$result) {
-            die("Erro na consulta: " . $conexao->error); // Mostra o erro do MySQL
-        }
-    }
+    //     // if (!$result) {
+    //     //     die("Erro na consulta: " . $conexao->error); // Mostra o erro do MySQL
+    //     // }
+    // }
 ?>
 <!DOCTYPE html>
 <html lang="pt-BR">
@@ -148,14 +148,14 @@
             const editaveis = document.querySelectorAll('.dado-editavel-conteudo');
             const estaEditando = this.classList.toggle('editando-ativo');
             
-            if (estaEditando) {
-                this.innerHTML = '<i class="fas fa-save"></i> Salvar';
-                editaveis.forEach(campo => {
-                    campo.setAttribute('contenteditable', 'true');
-                    campo.focus();
-                });
-            } else {
-                this.innerHTML = '<i class="fas fa-pencil-alt"></i> Editar';
+            // if (estaEditando) {
+            //     this.innerHTML = '<i class="fas fa-save"></i> Salvar';
+            //     editaveis.forEach(campo => {
+            //         campo.setAttribute('contenteditable', 'true');
+            //         campo.focus();
+            //     });
+            // } else {
+            //     this.innerHTML = '<i class="fas fa-pencil-alt"></i> Editar';
                 editaveis.forEach(campo => {
                     campo.setAttribute('contenteditable', 'false');
                     // Aqui você pode adicionar código para salvar no backend
@@ -165,4 +165,4 @@
         });
     </script>
 </body>
-</html>
+</html> --!>

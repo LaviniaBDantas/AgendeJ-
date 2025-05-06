@@ -199,6 +199,16 @@ input:focus {
     background-color: #38a169;
 }
 
+.material-symbols-outlined {
+  font-variation-settings:
+  'FILL' 0,
+  'wght' 400,
+  'GRAD' 0,
+  'opsz' 24;
+   color: white;
+   padding-left: 10px;
+}
+
 /* ===== LINKS ===== */
 a {
     color: #4299e1;
@@ -369,22 +379,24 @@ a.botao:hover {
     gap: 0.5rem;
 }
 
-/* ===== BADGES ===== */
-.badge {
+/* ===== BADGES - CORREÇÃO ===== */
+.consulta-acoes .badge {
+    all: initial; /* Reseta estilos conflitantes */
     display: inline-block;
-    padding: 0.25rem 0.75rem;
-    border-radius: 9999px;
-    font-size: 0.75rem;
-    font-weight: 600;
-    color: white;
+    padding: 0.35rem 0.75rem !important;
+    border-radius: 50px !important;
+    font-size: 0.75rem !important;
+    font-weight: 600 !important;
+    color: white !important;
+    text-transform: capitalize;
 }
 
-.badge-confirmada {
-    background-color: #48bb78;
+.consulta-acoes .badge-confirmado {
+    background-color: #28a745 !important;
 }
 
-.badge-pendente {
-    background-color: #ed8936;
+.consulta-acoes .badge-pendente {
+    background-color: #ed8936 !important;
 }
 
 /* ===== RESPONSIVIDADE ===== */
@@ -685,7 +697,7 @@ body.with-navbar {
 }
 
 .botao-deletar {
-    background-color: #ff5252;
+    background-color: #ff1a1a;
     color: white;
     border: none;
     border-radius: 4px;

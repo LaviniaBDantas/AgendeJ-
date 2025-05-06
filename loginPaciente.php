@@ -13,10 +13,14 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $stmt->execute([$email]);
 
         if ($stmt->rowCount() == 1) {
-            $usuario = $stmt->fetch(PDO::FETCH_ASSOC);
+            $paciente = $stmt->fetch(PDO::FETCH_ASSOC);
 
-            if (password_verify($senha, $usuario['senha'])) {
-                $_SESSION['paciente'] = $usuario['cpf']; // ou outro dado para sessão
+            if (password_verify($senha, $paciente['senha'])) {
+
+                //Login bem sucedido
+                $_SESSION['cpf'] = $paciente['cpf'];
+                $_SESSION['nome'] = $paciente['nome'];
+
                 header("Location: Home.php");
                 exit();
             } else {
@@ -60,7 +64,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         <a class="nav-link" href="pagAgendamento.php">Agendar</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="Usuario.php">Meus Dados</a>
+                    <a class="nav-link" href="meusDados.php">Meus Dados</a>
                     </li>
                     <li class="nav-item">
                         <select class="login-select form-select" onchange="window.location.href=this.value">
@@ -82,11 +86,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         <form method="POST" action="loginPaciente.php">
             <input type="email" id="email" name="email" placeholder="Digite seu E-mail" required>
             <br><br>
-            <input type="password" id="password" name="password" placeholder="Digite sua Senha" required>
+            <input type="password" id="password" name="password" placeholder="Digite seu cpf" required>
             <br><br>
             <button type="submit" class="botao">Entrar</button>
             <br>
-            <a href="Cadastro.html" class="botao">Criar cadastro</a>
+            <a href="CadastroPaciente.php" class="botao">Criar cadastro</a>
         </form>
     </div>
 

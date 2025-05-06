@@ -1,5 +1,6 @@
 <?php
-include 'db.php'; // Inclui a conexão com o banco
+session_start();
+include 'db.php'; 
 
 // Processa a busca se o formulário foi enviado
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['especialidade'])) {
@@ -163,7 +164,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['especialidade'])) {
                         <a class="nav-link" href="pagAgendamento.php">Agendar</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="Usuario.php">Meus Dados</a>
+                        <a class="nav-link" href="meusDados.php">Meus Dados</a>
                     </li>
                     <li class="nav-item">
                         <select class="login-select form-select" onchange="window.location.href=this.value" Login>

@@ -1,4 +1,5 @@
 <?php
+session_start();
 include 'db.php';
 
 $especialidade = isset($_GET['especialidade']) ? trim($_GET['especialidade']) : '';
@@ -40,7 +41,7 @@ $medicos = $stmt->fetchAll();
                         <a class="nav-link" href="pagAgendamento.php">Agendar</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="Usuario.php">Meus Dados</a>
+                        <a class="nav-link" href="meusDados.php">Meus Dados</a>
                     </li>
                     <li class="nav-item">
                         <select class="login-select form-select" onchange="window.location.href=this.value" Login>

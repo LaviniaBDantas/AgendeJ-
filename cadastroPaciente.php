@@ -51,7 +51,35 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </head>
 
 <body>
-    <!-- sua navbar aqui (sem alterações) -->
+<nav class="navbar navbar-expand-lg navbar-custom">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="Home.php">
+                <img src="imagens/logo.png" alt="" height="50" class="d-inline-block align-top">
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="pagAgendamento.php">Agendar</a>
+                    </li>
+                    <li class="nav-item">
+                    <a class="nav-link" href="meusDados.php">Meus Dados</a>
+                    </li>
+                    <li class="nav-item">
+                        <select class="login-select form-select" onchange="window.location.href=this.value" Login>
+                            <option class="item-login" value="">Login</option>
+                            <option class="item-login" value="loginMedico.php">Médico</option>
+                            <option class="item-login" value="loginPaciente.php">Paciente</option>
+                        </select>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+    
 
     <div class="cad-container">
         <h1>Realize seu cadastro</h1>
