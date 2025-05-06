@@ -41,6 +41,39 @@ $avaliacoes = $stmtAvaliacoes->fetchAll();
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
         crossorigin="anonymous"></script>
+
+        <style>
+  html, body {
+    height: auto !important;
+    overflow: auto !important;
+    position: relative !important;
+    overflow-x: hidden !important; /* Previne scroll horizontal indesejado */
+  }
+  
+  /* Se houver algum container específico com problema de scroll */
+  .container, .main-content, .page-content {
+    height: auto !important;
+    overflow: visible !important;
+    min-height: 100vh;
+  }
+</style>
+
+<script>
+  // Garantir que o scroll esteja habilitado quando a página carregar
+  document.addEventListener('DOMContentLoaded', function() {
+    document.body.style.overflow = 'auto';
+    document.documentElement.style.overflow = 'auto';
+    
+    // Se houver algum elemento que esteja bloqueando o scroll, encontre-o e corrija
+    const fixElements = document.querySelectorAll('.fixed-element, .modal, .overlay');
+    fixElements.forEach(function(element) {
+      if (window.getComputedStyle(element).position === 'fixed') {
+        element.style.height = 'auto';
+        element.style.overflow = 'visible';
+      }
+    });
+  });
+</script>
 </head>
 
 <body>
