@@ -12,7 +12,7 @@ session_start();
     if (!isset($_GET['id_consulta']) || empty($_GET['id_consulta'])) {
         $_SESSION['mensagem'] = "ID da consulta não fornecido.";
         $_SESSION['tipo_mensagem'] = "erro";
-        header("Location: Usuario.php");
+        header("Location: meusDados.php");
         exit();
     }
     $id_consulta = $_GET['id_consulta'];
@@ -24,6 +24,6 @@ session_start();
         $_SESSION['mensagem'] = "Erro ao cancelar consulta: " . $conexao->error;
         $_SESSION['tipo_mensagem'] = "erro";
     }
-    header("Location: usuario.php");
+    header("Location: meusDados.php");
     exit();
 ?>
