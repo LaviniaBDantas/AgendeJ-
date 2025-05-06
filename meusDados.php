@@ -17,9 +17,17 @@ try {
         $stmt->execute([$cpf]);
         $result = $stmt;
 
-        $stmtPaciente = $pdo->prepare("SELECT * FROM paciente WHERE cpf = ?");
+        // Modificado para selecionar explicitamente todos os campos necessários
+        $stmtPaciente = $pdo->prepare("SELECT cpf, nome, email, telefone, endereco, convenio FROM paciente WHERE cpf = ?");
         $stmtPaciente->execute([$cpf]);
         $dados = $stmtPaciente->fetch(PDO::FETCH_ASSOC);
+        
+        // Garante que todos os campos existam no array
+        $dados['email'] = $dados['email'] ?? '';
+        $dados['telefone'] = $dados['telefone'] ?? '';
+        $dados['endereco'] = $dados['endereco'] ?? '';
+        $dados['convenio'] = $dados['convenio'] ?? '';
+        
         $titulo = "Área do Paciente";
     } elseif ($isMedico) {
         $crm = $_SESSION['crm'];
@@ -27,9 +35,15 @@ try {
         $stmt->execute([$crm]);
         $result = $stmt;
 
-        $stmtMedico = $pdo->prepare("SELECT * FROM medico WHERE crm = ?");
+        $stmtMedico = $pdo->prepare("SELECT crm, nome, email, telefone, endereco, especialidade FROM medico WHERE crm = ?");
         $stmtMedico->execute([$crm]);
         $dados = $stmtMedico->fetch(PDO::FETCH_ASSOC);
+        
+        // Garante que todos os campos existam no array
+        $dados['email'] = $dados['email'] ?? '';
+        $dados['telefone'] = $dados['telefone'] ?? '';
+        $dados['endereco'] = $dados['endereco'] ?? '';
+        
         $titulo = "Área do Médico";
     }
 } catch (PDOException $e) {
@@ -51,10 +65,9 @@ try {
             height: auto !important;
             overflow: auto !important;
             position: relative !important;
-            overflow-x: hidden !important; /* Previne scroll horizontal indesejado */
+            overflow-x: hidden !important;
         }
   
-        /* Se houver algum container específico com problema de scroll */
         .container, .main-content, .page-content {
             height: auto !important;
             overflow: visible !important;
@@ -76,14 +89,17 @@ try {
         .card-consultas .badge-pendente {
             background-color: #ed8936;
         }
+        
+        .dado-valor[contenteditable="true"] {
+            background-color: #f8f9fa;
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+            padding: 2px 5px;
+        }
     </style>
-
-
-
 </head>
 
 <body class="with-navbar">
-    <!-- Mova a navbar para fora do main e para o topo do body -->
     <nav class="navbar navbar-expand-lg navbar-custom">
         <div class="container-fluid">
             <a class="navbar-brand" href="Home.php">
@@ -116,7 +132,6 @@ try {
         </div>
     </nav>
 
-    <main class="container"></nav>
     <main class="container">
         <h1 class="titulo-principal"><?= $titulo ?></h1>
         <div class="grid-container">
@@ -164,117 +179,133 @@ try {
                     <div class="dado-item dado-editavel"><i class="fas fa-envelope icone"></i>
                         <div class="dado-conteudo">
                             <p class="dado-label">E-mail:</p>
-                            <p class="dado-valor dado-editavel-conteudo"><?= $dados['email'] ?></p>
+                            <p class="dado-valor dado-editavel-conteudo" data-campo="email"><?= !empty($dados['email']) ? $dados['email'] : 'Não informado' ?></p>
                         </div>
                     </div>
                     <div class="dado-item dado-editavel"><i class="fas fa-phone icone"></i>
                         <div class="dado-conteudo">
                             <p class="dado-label">Telefone:</p>
-                            <p class="dado-valor dado-editavel-conteudo"><?= $dados['telefone'] ?></p>
+                            <p class="dado-valor dado-editavel-conteudo" data-campo="telefone"><?= !empty($dados['telefone']) ? $dados['telefone'] : 'Não informado' ?></p>
                         </div>
                     </div>
-                    <?php if (isset($dados['endereco'])): ?>
-                        <div class="dado-item dado-editavel"><i class="fas fa-map-marker-alt icone"></i>
-                            <div class="dado-conteudo">
-                                <p class="dado-label">Endereço:</p>
-                                <p class="dado-valor dado-editavel-conteudo"><?= $dados['endereco'] ?></p>
-                            </div>
+                    <div class="dado-item dado-editavel"><i class="fas fa-map-marker-alt icone"></i>
+                        <div class="dado-conteudo">
+                            <p class="dado-label">Endereço:</p>
+                            <p class="dado-valor dado-editavel-conteudo" data-campo="endereco"><?= !empty($dados['endereco']) ? $dados['endereco'] : 'Não informado' ?></p>
                         </div>
-                    <?php endif; ?>
-                    <?php if (isset($dados['convenio'])): ?>
+                    </div>
+                    <?php if ($isPaciente): ?>
                         <div class="dado-item dado-editavel"><i class="fas fa-heartbeat icone"></i>
                             <div class="dado-conteudo">
                                 <p class="dado-label">Convênio:</p>
-                                <p class="dado-valor dado-editavel-conteudo"><?= $dados['convenio'] ?></p>
+                                <p class="dado-valor dado-editavel-conteudo" data-campo="convenio"><?= !empty($dados['convenio']) ? $dados['convenio'] : 'Não informado' ?></p>
                             </div>
                         </div>
                     <?php endif; ?>
                 </div>
             </div>
 
-        <!-- Card Consultas -->
-        <div class="card card-consultas">
-            <h2 class="titulo-card">Consultas</h2>
-            <div class="consultas-lista">
-                <?php while ($row = $result->fetch(PDO::FETCH_ASSOC)):
-                    if ($isPaciente) {
-                        $stmtMed = $pdo->prepare("SELECT nome, especialidade FROM medico WHERE crm = ?");
-                        $stmtMed->execute([$row['crm_medico']]);
-                        $info = $stmtMed->fetch(PDO::FETCH_ASSOC);
-                    } else {
-                        $stmtPac = $pdo->prepare("SELECT nome FROM paciente WHERE cpf = ?");
-                        $stmtPac->execute([$row['cpf_paciente']]);
-                        $info = $stmtPac->fetch(PDO::FETCH_ASSOC);
-                    }
-                    ?>
-                    <div class="consulta-item">
-                        <div class="consulta-info">
-                            <h3 class="consulta-especialidade"><?= $info['especialidade'] ?? '' ?></h3>
-                            <p class="consulta-medico"><?= $info['nome'] ?></p>
-                            <div class="consulta-detalhes">
-                                <div class="consulta-data"><i class="fas fa-calendar-alt icone-pequeno"></i><span class="dado-valor"><?= $row['data_hora'] ?></span></div>
+            <!-- Card Consultas -->
+            <div class="card card-consultas">
+                <h2 class="titulo-card">Consultas</h2>
+                <div class="consultas-lista">
+                    <?php while ($row = $result->fetch(PDO::FETCH_ASSOC)):
+                        if ($isPaciente) {
+                            $stmtMed = $pdo->prepare("SELECT nome, especialidade FROM medico WHERE crm = ?");
+                            $stmtMed->execute([$row['crm_medico']]);
+                            $info = $stmtMed->fetch(PDO::FETCH_ASSOC);
+                        } else {
+                            $stmtPac = $pdo->prepare("SELECT nome FROM paciente WHERE cpf = ?");
+                            $stmtPac->execute([$row['cpf_paciente']]);
+                            $info = $stmtPac->fetch(PDO::FETCH_ASSOC);
+                        }
+                        ?>
+                        <div class="consulta-item">
+                            <div class="consulta-info">
+                                <h3 class="consulta-especialidade"><?= $info['especialidade'] ?? '' ?></h3>
+                                <p class="consulta-medico"><?= $info['nome'] ?></p>
+                                <div class="consulta-detalhes">
+                                    <div class="consulta-data"><i class="fas fa-calendar-alt icone-pequeno"></i><span class="dado-valor"><?= $row['data_hora'] ?></span></div>
+                                </div>
+                            </div>
+                            <div class="consulta-acoes">
+                                <?php
+                                $status = isset($row['status']) ? $row['status'] : 'Pendente';
+                                $badgeClass = $status === 'Confirmado' ? 'badge-confirmado' : 'badge-pendente';
+                                ?>
+                                <span class="badge <?= $badgeClass ?>"><?= $status ?></span>
+
+                                <?php if ($isMedico && $status === 'Pendente'): ?>
+                                    <a href="confirmarConsulta.php?id=<?= $row['id_consulta'] ?>" class="botao botao-confirmar">Confirmar</a>
+                                <?php endif; ?>
+
+                                <a href="deletar_consulta.php?id_consulta=<?= $row['id_consulta'] ?>" class="botao botao-deletar"
+                                   onclick="return confirm('Tem certeza que deseja cancelar esta consulta?');">
+                                    <i class="fas fa-trash-alt"></i> Cancelar
+                                </a>
                             </div>
                         </div>
-                        <div class="consulta-acoes">
-                            <?php
-                            $badgeClass = $row['status'] === 'Confirmado' ? 'badge-confirmado' : 'badge-pendente';
-                            ?>
-                            <span class="badge <?= $badgeClass ?>"><?= $row['status'] ?></span>
+                    <?php endwhile; ?>
+                </div>
 
-                            <?php if ($isMedico && $row['status'] === 'Pendente'): ?>
-                                <a href="confirmarConsulta.php?id=<?= $row['id_consulta'] ?>" class="botao botao-confirmar">Confirmar</a>
-                            <?php endif; ?>
-
-                            <a href="deletar_consulta.php?id_consulta=<?= $row['id_consulta'] ?>" class="botao botao-deletar"
-                               onclick="return confirm('Tem certeza que deseja cancelar esta consulta?');">
-                                <i class="fas fa-trash-alt"></i> Cancelar
-                            </a>
-                        </div>
-                    </div>
-                <?php endwhile; ?>
+                <?php if ($isPaciente): ?>
+                    <a class="botao botao-full" href="pagAgendamento.php">Agendar Nova Consulta</a>
+                <?php endif; ?>
             </div>
-
-            <?php if ($isPaciente): ?>
-                <a class="botao botao-full" href="pagAgendamento.php">Agendar Nova Consulta</a>
-            <?php endif; ?>
         </div>
-    </div>
-</main>
+    </main>
 
-<script>
-document.getElementById('botao-editar').addEventListener('click', function () {
-    const campos = document.querySelectorAll('.dado-editavel-conteudo');
-    const editando = this.classList.toggle('editando-ativo');
+    <script>
+    document.getElementById('botao-editar').addEventListener('click', function () {
+        const campos = document.querySelectorAll('.dado-editavel-conteudo');
+        const editando = this.classList.toggle('editando-ativo');
 
-    if (editando) {
-        this.innerHTML = '<i class="fas fa-save"></i> Salvar';
-        campos.forEach(campo => campo.setAttribute('contenteditable', 'true'));
-    } else {
-        this.innerHTML = '<i class="fas fa-pencil-alt"></i> Editar';
-        campos.forEach(campo => campo.setAttribute('contenteditable', 'false'));
+        if (editando) {
+            this.innerHTML = '<i class="fas fa-save"></i> Salvar';
+            campos.forEach(campo => {
+                campo.setAttribute('contenteditable', 'true');
+                if (campo.textContent === 'Não informado') {
+                    campo.textContent = '';
+                }
+            });
+        } else {
+            this.innerHTML = '<i class="fas fa-pencil-alt"></i> Editar';
+            campos.forEach(campo => campo.setAttribute('contenteditable', 'false'));
 
-        const formData = new FormData();
-        campos.forEach(campo => {
-            formData.append(campo.dataset.campo, campo.innerText.trim());
-        });
+            const formData = new FormData();
+            campos.forEach(campo => {
+                const campoName = campo.getAttribute('data-campo');
+                const valor = campo.textContent.trim() === '' ? '' : campo.textContent.trim();
+                formData.append(campoName, valor);
+            });
 
-        fetch('atualizarDados.php', {
-            method: 'POST',
-            body: formData
-        })
-        .then(res => res.json())
-        .then(data => {
-            alert(data.mensagem);
-            if (data.status === 'sucesso') {
-                location.reload();
-            }
-        })
-        .catch(err => {
-            alert('Erro ao salvar os dados.');
-            console.error(err);
-        });
-    }
-});
-</script>
+            // Adiciona o tipo de usuário ao FormData
+            formData.append('tipo', '<?= $isPaciente ? "paciente" : "medico" ?>');
+
+            fetch('atualizarDados.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(res => {
+                if (!res.ok) {
+                    throw new Error('Erro na resposta do servidor: ' + res.status);
+                }
+                return res.json();
+            })
+            .then(data => {
+                if (data.status === 'sucesso') {
+                    alert(data.mensagem);
+                    location.reload();
+                } else {
+                    throw new Error(data.mensagem || 'Erro ao atualizar dados');
+                }
+            })
+            .catch(err => {
+                alert('Erro ao salvar os dados: ' + err.message);
+                console.error('Erro:', err);
+            });
+        }
+    });
+    </script>
 </body>
 </html>
