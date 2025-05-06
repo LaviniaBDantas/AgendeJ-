@@ -39,11 +39,24 @@ elseif (isset($_SESSION['crm'])) {
 <head>
     <meta charset="utf-8">
     <title>Meus Dados</title>
-    <link rel="stylesheet" href="estiloNovo.css" type="text/css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="estiloNovo.css" type="text/css">
     <style>
+        html, body {
+            height: auto !important;
+            overflow: auto !important;
+            position: relative !important;
+            overflow-x: hidden !important; /* Previne scroll horizontal indesejado */
+        }
+  
+        /* Se houver algum container específico com problema de scroll */
+        .container, .main-content, .page-content {
+            height: auto !important;
+            overflow: visible !important;
+            min-height: 100vh;
+        }
         .card-consultas .badge {
             display: inline-block;
             padding: 0.25rem 0.75rem;
@@ -63,22 +76,48 @@ elseif (isset($_SESSION['crm'])) {
     </style>
 
 
+
 </head>
 
-<body>
+<body class="with-navbar">
+    <!-- Mova a navbar para fora do main e para o topo do body -->
+    <nav class="navbar navbar-expand-lg navbar-custom">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="Home.php">
+                <img src="imagens/logo.png" alt="" height="50" class="d-inline-block align-top">
+            </a>
+            <a href="logout.php" class="botao-logout ms-auto" title="Sair">
+                <span class="material-icons">logout</span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="pagAgendamento.php">Agendar</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="meusDados.php">Meus Dados</a>
+                    </li>
+                    <li class="nav-item">
+                        <select class="login-select form-select" onchange="window.location.href=this.value" Login>
+                            <option class="item-login" value="">Login</option>
+                            <option class="item-login" value="loginMedico.php">Médico</option>
+                            <option class="item-login" value="loginPaciente.php">Paciente</option>
+                        </select>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container"></nav>
     <main class="container">
         <h1 class="titulo-principal"><?= $titulo ?></h1>
 
-        <nav class="navbar navbar-expand-lg navbar-custom">
-            <div class="container-fluid d-flex justify-content-between align-items-center">
-                <a class="navbar-brand" href="Home.php">
-                    <img src="imagens/logo.png" alt="" height="50" class="d-inline-block align-top">
-                </a>
-                <a href="logout.php" class="botao-logout ms-auto" title="Sair">
-                    <span class="material-icons">logout</span>
-                </a>
-            </div>
-        </nav>
+
 
 
         <div class="grid-container">
@@ -228,6 +267,8 @@ elseif (isset($_SESSION['crm'])) {
             }
         });
     </script>
+
+    
 </body>
 
 </html>
