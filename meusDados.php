@@ -21,13 +21,13 @@ try {
         $stmtPaciente = $pdo->prepare("SELECT cpf, nome, email, telefone, endereco, convenio FROM paciente WHERE cpf = ?");
         $stmtPaciente->execute([$cpf]);
         $dados = $stmtPaciente->fetch(PDO::FETCH_ASSOC);
-        
+
         // Garante que todos os campos existam no array
         $dados['email'] = $dados['email'] ?? '';
         $dados['telefone'] = $dados['telefone'] ?? '';
         $dados['endereco'] = $dados['endereco'] ?? '';
         $dados['convenio'] = $dados['convenio'] ?? '';
-        
+
         $titulo = "Área do Paciente";
     } elseif ($isMedico) {
         $crm = $_SESSION['crm'];
@@ -35,15 +35,15 @@ try {
         $stmt->execute([$crm]);
         $result = $stmt;
 
-        $stmtMedico = $pdo->prepare("SELECT crm, nome, email, telefone, endereco, especialidade FROM medico WHERE crm = ?");
+        $stmtMedico = $pdo->prepare("SELECT crm, nome, email, telefone, endereco_clinica, especialidade FROM medico WHERE crm = ?");
         $stmtMedico->execute([$crm]);
         $dados = $stmtMedico->fetch(PDO::FETCH_ASSOC);
-        
+
         // Garante que todos os campos existam no array
         $dados['email'] = $dados['email'] ?? '';
         $dados['telefone'] = $dados['telefone'] ?? '';
-        $dados['endereco'] = $dados['endereco'] ?? '';
-        
+        $dados['endereco'] = $dados['endereco_clinica'] ?? '';
+
         $titulo = "Área do Médico";
     }
 } catch (PDOException $e) {
@@ -53,6 +53,7 @@ try {
 
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="utf-8">
     <title>Meus Dados</title>
@@ -61,18 +62,22 @@ try {
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="estiloNovo.css" type="text/css">
     <style>
-        html, body {
+        html,
+        body {
             height: auto !important;
             overflow: auto !important;
             position: relative !important;
             overflow-x: hidden !important;
         }
-  
-        .container, .main-content, .page-content {
+
+        .container,
+        .main-content,
+        .page-content {
             height: auto !important;
             overflow: visible !important;
             min-height: 100vh;
         }
+
         .card-consultas .badge {
             display: inline-block;
             padding: 0.25rem 0.75rem;
@@ -89,7 +94,7 @@ try {
         .card-consultas .badge-pendente {
             background-color: #ed8936;
         }
-        
+
         .dado-valor[contenteditable="true"] {
             background-color: #f8f9fa;
             border: 1px solid #ced4da;
@@ -179,26 +184,34 @@ try {
                     <div class="dado-item dado-editavel"><i class="fas fa-envelope icone"></i>
                         <div class="dado-conteudo">
                             <p class="dado-label">E-mail:</p>
-                            <p class="dado-valor dado-editavel-conteudo" data-campo="email"><?= !empty($dados['email']) ? $dados['email'] : 'Não informado' ?></p>
+                            <p class="dado-valor dado-editavel-conteudo" data-campo="email">
+                                <?= !empty($dados['email']) ? $dados['email'] : 'Não informado' ?>
+                            </p>
                         </div>
                     </div>
                     <div class="dado-item dado-editavel"><i class="fas fa-phone icone"></i>
                         <div class="dado-conteudo">
                             <p class="dado-label">Telefone:</p>
-                            <p class="dado-valor dado-editavel-conteudo" data-campo="telefone"><?= !empty($dados['telefone']) ? $dados['telefone'] : 'Não informado' ?></p>
+                            <p class="dado-valor dado-editavel-conteudo" data-campo="telefone">
+                                <?= !empty($dados['telefone']) ? $dados['telefone'] : 'Não informado' ?>
+                            </p>
                         </div>
                     </div>
                     <div class="dado-item dado-editavel"><i class="fas fa-map-marker-alt icone"></i>
                         <div class="dado-conteudo">
                             <p class="dado-label">Endereço:</p>
-                            <p class="dado-valor dado-editavel-conteudo" data-campo="endereco"><?= !empty($dados['endereco']) ? $dados['endereco'] : 'Não informado' ?></p>
+                            <p class="dado-valor dado-editavel-conteudo" data-campo="endereco">
+                                <?= !empty($dados['endereco']) ? $dados['endereco'] : 'Não informado' ?>
+                            </p>
                         </div>
                     </div>
                     <?php if ($isPaciente): ?>
                         <div class="dado-item dado-editavel"><i class="fas fa-heartbeat icone"></i>
                             <div class="dado-conteudo">
                                 <p class="dado-label">Convênio:</p>
-                                <p class="dado-valor dado-editavel-conteudo" data-campo="convenio"><?= !empty($dados['convenio']) ? $dados['convenio'] : 'Não informado' ?></p>
+                                <p class="dado-valor dado-editavel-conteudo" data-campo="convenio">
+                                    <?= !empty($dados['convenio']) ? $dados['convenio'] : 'Não informado' ?>
+                                </p>
                             </div>
                         </div>
                     <?php endif; ?>
@@ -219,13 +232,28 @@ try {
                             $stmtPac->execute([$row['cpf_paciente']]);
                             $info = $stmtPac->fetch(PDO::FETCH_ASSOC);
                         }
+                        // Formata a data e hora separadamente
+                        $dataHora = DateTime::createFromFormat('Y-m-d H:i:s', $row['data_hora']);
+                        $dataFormatada = $dataHora ? $dataHora->format('d/m/Y') : '';
+                        $horaFormatada = $dataHora ? $dataHora->format('H:i') : '';
                         ?>
                         <div class="consulta-item">
                             <div class="consulta-info">
                                 <h3 class="consulta-especialidade"><?= $info['especialidade'] ?? '' ?></h3>
-                                <p class="consulta-medico"><?= $info['nome'] ?></p>
+                                <?php if ($isMedico): ?>
+                                    <p class="consulta-medico"><strong>Paciente:</strong> <?= $info['nome'] ?></p>
+                                <?php else: ?>
+                                    <p class="consulta-medico"><?= $info['nome'] ?></p>
+                                <?php endif; ?>
                                 <div class="consulta-detalhes">
-                                    <div class="consulta-data"><i class="fas fa-calendar-alt icone-pequeno"></i><span class="dado-valor"><?= $row['data_hora'] ?></span></div>
+                                    <div class="consulta-data">
+                                        <i class="fas fa-calendar-alt icone-pequeno"></i>
+                                        <span class="dado-valor"><?= $dataFormatada ?></span>
+                                    </div>
+                                    <div class="consulta-hora">
+                                        <i class="fas fa-clock icone-pequeno"></i>
+                                        <span class="dado-valor"><?= $horaFormatada ?></span>
+                                    </div>
                                 </div>
                             </div>
                             <div class="consulta-acoes">
@@ -236,13 +264,18 @@ try {
                                 <span class="badge <?= $badgeClass ?>"><?= $status ?></span>
 
                                 <?php if ($isMedico && $status === 'Pendente'): ?>
-                                    <a href="confirmarConsulta.php?id=<?= $row['id_consulta'] ?>" class="botao botao-confirmar">Confirmar</a>
+                                    <a href="confirmarConsulta.php?id=<?= $row['id_consulta'] ?>"
+                                        class="botao botao-confirmar">Confirmar</a>
                                 <?php endif; ?>
 
-                                <a href="deletar_consulta.php?id_consulta=<?= $row['id_consulta'] ?>" class="botao botao-deletar"
-                                   onclick="return confirm('Tem certeza que deseja cancelar esta consulta?');">
-                                    <i class="fas fa-trash-alt"></i> Cancelar
-                                </a>
+
+                                <?php if ($isPaciente): ?>
+                                    <a href="deletar_consulta.php?id_consulta=<?= $row['id_consulta'] ?>"
+                                        class="botao botao-deletar"
+                                        onclick="return confirm('Tem certeza que deseja cancelar esta consulta?');">
+                                        <i class="fas fa-trash-alt"></i> Cancelar
+                                    </a>
+                                <?php endif; ?>
                             </div>
                         </div>
                     <?php endwhile; ?>
@@ -256,56 +289,57 @@ try {
     </main>
 
     <script>
-    document.getElementById('botao-editar').addEventListener('click', function () {
-        const campos = document.querySelectorAll('.dado-editavel-conteudo');
-        const editando = this.classList.toggle('editando-ativo');
+        document.getElementById('botao-editar').addEventListener('click', function () {
+            const campos = document.querySelectorAll('.dado-editavel-conteudo');
+            const editando = this.classList.toggle('editando-ativo');
 
-        if (editando) {
-            this.innerHTML = '<i class="fas fa-save"></i> Salvar';
-            campos.forEach(campo => {
-                campo.setAttribute('contenteditable', 'true');
-                if (campo.textContent === 'Não informado') {
-                    campo.textContent = '';
-                }
-            });
-        } else {
-            this.innerHTML = '<i class="fas fa-pencil-alt"></i> Editar';
-            campos.forEach(campo => campo.setAttribute('contenteditable', 'false'));
+            if (editando) {
+                this.innerHTML = '<i class="fas fa-save"></i> Salvar';
+                campos.forEach(campo => {
+                    campo.setAttribute('contenteditable', 'true');
+                    if (campo.textContent === 'Não informado') {
+                        campo.textContent = '';
+                    }
+                });
+            } else {
+                this.innerHTML = '<i class="fas fa-pencil-alt"></i> Editar';
+                campos.forEach(campo => campo.setAttribute('contenteditable', 'false'));
 
-            const formData = new FormData();
-            campos.forEach(campo => {
-                const campoName = campo.getAttribute('data-campo');
-                const valor = campo.textContent.trim() === '' ? '' : campo.textContent.trim();
-                formData.append(campoName, valor);
-            });
+                const formData = new FormData();
+                campos.forEach(campo => {
+                    const campoName = campo.getAttribute('data-campo');
+                    const valor = campo.textContent.trim() === '' ? '' : campo.textContent.trim();
+                    formData.append(campoName, valor);
+                });
 
-            // Adiciona o tipo de usuário ao FormData
-            formData.append('tipo', '<?= $isPaciente ? "paciente" : "medico" ?>');
+                // Adiciona o tipo de usuário ao FormData
+                formData.append('tipo', '<?= $isPaciente ? "paciente" : "medico" ?>');
 
-            fetch('atualizarDados.php', {
-                method: 'POST',
-                body: formData
-            })
-            .then(res => {
-                if (!res.ok) {
-                    throw new Error('Erro na resposta do servidor: ' + res.status);
-                }
-                return res.json();
-            })
-            .then(data => {
-                if (data.status === 'sucesso') {
-                    alert(data.mensagem);
-                    location.reload();
-                } else {
-                    throw new Error(data.mensagem || 'Erro ao atualizar dados');
-                }
-            })
-            .catch(err => {
-                alert('Erro ao salvar os dados: ' + err.message);
-                console.error('Erro:', err);
-            });
-        }
-    });
+                fetch('atualizarDados.php', {
+                    method: 'POST',
+                    body: formData
+                })
+                    .then(res => {
+                        if (!res.ok) {
+                            throw new Error('Erro na resposta do servidor: ' + res.status);
+                        }
+                        return res.json();
+                    })
+                    .then(data => {
+                        if (data.status === 'sucesso') {
+                            alert(data.mensagem);
+                            location.reload();
+                        } else {
+                            throw new Error(data.mensagem || 'Erro ao atualizar dados');
+                        }
+                    })
+                    .catch(err => {
+                        alert('Erro ao salvar os dados: ' + err.message);
+                        console.error('Erro:', err);
+                    });
+            }
+        });
     </script>
 </body>
+
 </html>

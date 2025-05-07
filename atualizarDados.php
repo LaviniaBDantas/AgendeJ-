@@ -48,7 +48,7 @@ try {
         $sql = "UPDATE medico SET 
                 email = :email, 
                 telefone = :telefone, 
-                endereco = :endereco 
+                endereco_clinica = :endereco 
                 WHERE crm = :crm";
                 
         $stmt = $pdo->prepare($sql);

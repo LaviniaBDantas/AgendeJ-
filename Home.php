@@ -184,8 +184,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['especialidade'])) {
             <div class="row">
                 <div class="col-lg-8 mx-auto text-center">
                     <h1 class="display-4 fw-bold mb-3">Cuidando da sua saúde com facilidade</h1>
-                    <p class="lead mb-5">Encontre os melhores médicos e agende consultas online de forma rápida e
-                        segura.</p>
+                    <p class="lead mb-5"><b>Encontre os melhores médicos e agende consultas online de forma rápida e
+                        segura.</p></b>
                 </div>
             </div>
 

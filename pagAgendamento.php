@@ -133,7 +133,7 @@ if (!empty($especialidade_para_busca)) {
 
             <?php if (!empty($medico_selecionado)): ?>
                 <div class="alert alert-info mb-3">
-                    Você está agendando com o Dr. <?= htmlspecialchars($medico_selecionado['nome']) ?>.
+                    Você está agendando com o <?= htmlspecialchars($medico_selecionado['nome']) ?>.
                     <a href="pagAgendamento.php" class="alert-link">Quer mudar de médico?</a>
                 </div>
             <?php endif; ?>
