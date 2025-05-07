@@ -267,7 +267,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['especialidade'])) {
     <!-- Footer -->
     <footer class="footer">
         <div class="container">
-            <p>&copy; 2023 Agende Já. Todos os direitos reservados.</p>
+            <p>&copy; 2025 Agende Já. Todos os direitos reservados.</p>
         </div>
     </footer>
 
