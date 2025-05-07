@@ -101,6 +101,44 @@ try {
             border-radius: 4px;
             padding: 2px 5px;
         }
+
+        .consulta-item {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .consulta-item .mt-3 {
+            flex-basis: 100%;
+            margin-top: 1rem;
+        }
+    </style>
+    <style>
+        /* Estilos específicos para corrigir o problema de sobreposição nesta página */
+        body.with-navbar {
+            padding-top: 90px !important;
+        }
+        
+        .titulo-principal {
+            margin-top: 20px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .container {
+            position: relative;
+            z-index: 1;
+            padding-top: 20px;
+        }
+        
+        @media (max-width: 768px) {
+            body.with-navbar {
+                padding-top: 100px !important;
+            }
+        }
     </style>
 </head>
 
@@ -137,7 +175,7 @@ try {
         </div>
     </nav>
 
-    <main class="container">
+    <main class="container" id="main-content">
         <h1 class="titulo-principal"><?= $titulo ?></h1>
         <div class="grid-container">
             <!-- Card Dados -->
@@ -233,9 +271,14 @@ try {
                             $info = $stmtPac->fetch(PDO::FETCH_ASSOC);
                         }
                         // Formata a data e hora separadamente
+                        $dataHoraAtual = new DateTime(); // agora
                         $dataHora = DateTime::createFromFormat('Y-m-d H:i:s', $row['data_hora']);
                         $dataFormatada = $dataHora ? $dataHora->format('d/m/Y') : '';
                         $horaFormatada = $dataHora ? $dataHora->format('H:i') : '';
+                        $consultaPassada = $dataHora < $dataHoraAtual;
+
+                        // Verifica se a consulta já passou
+                        $consultaPassada = $dataHora && $dataHora < new DateTime();
                         ?>
                         <div class="consulta-item">
                             <div class="consulta-info">
@@ -268,7 +311,6 @@ try {
                                         class="botao botao-confirmar">Confirmar</a>
                                 <?php endif; ?>
 
-
                                 <?php if ($isPaciente): ?>
                                     <a href="deletar_consulta.php?id_consulta=<?= $row['id_consulta'] ?>"
                                         class="botao botao-deletar"
@@ -277,8 +319,26 @@ try {
                                     </a>
                                 <?php endif; ?>
                             </div>
+                            
+                            <!-- Parte de avaliação movida para baixo dos dados da consulta -->
+                            <div class="mt-3 w-100">
+                                <?php if ($isPaciente && $consultaPassada && empty($row['avaliacao'])): ?>
+                                    <form action="avaliarConsulta.php" method="POST" class="form-avaliacao">
+                                        <input type="hidden" name="id_consulta" value="<?= $row['id_consulta'] ?>">
+                                        <div class="mb-2">
+                                            <label for="avaliacao_<?= $row['id_consulta'] ?>">Avaliação:</label>
+                                            <textarea name="avaliacao" id="avaliacao_<?= $row['id_consulta'] ?>"
+                                                class="form-control" rows="2" required></textarea>
+                                        </div>
+                                        <button type="submit" class="btn btn-primary btn-sm">Enviar Avaliação</button>
+                                    </form>
+                                <?php elseif (!empty($row['avaliacao'])): ?>
+                                    <p><strong>Sua Avaliação:</strong> <?= htmlspecialchars($row['avaliacao']) ?></p>
+                                <?php endif; ?>
+                            </div>
                         </div>
                     <?php endwhile; ?>
+
                 </div>
 
                 <?php if ($isPaciente): ?>
@@ -337,6 +397,26 @@ try {
                         alert('Erro ao salvar os dados: ' + err.message);
                         console.error('Erro:', err);
                     });
+            }
+        });
+    </script>
+    <script>
+        // Script para garantir que o conteúdo não seja sobreposto pelo cabeçalho
+        document.addEventListener('DOMContentLoaded', function() {
+            // Ajusta o padding-top do corpo da página
+            document.body.style.paddingTop = '90px';
+            
+            // Garante que o título principal esteja visível
+            const titulo = document.querySelector('.titulo-principal');
+            if (titulo) {
+                titulo.style.marginTop = '20px';
+            }
+            
+            // Ajusta a posição do conteúdo principal
+            const mainContent = document.getElementById('main-content');
+            if (mainContent) {
+                mainContent.style.position = 'relative';
+                mainContent.style.zIndex = '1';
             }
         });
     </script>

@@ -10,16 +10,11 @@
     background-size: cover;
     font-family: Arial, sans-serif;
     color: #ffffff;
-    display: flex;
-    /* Adicionar flexbox */
-    justify-content: center;
-    /* Centralizar horizontalmente */
-    align-items: center;
-    /* Centralizar verticalmente */
-    height: 100vh;
-    /* Definir a altura da tela inteira */
     margin: 0;
-    /* Remover margens padrão */
+    min-height: 100vh;
+    height: auto !important;
+    overflow-y: auto !important;
+    position: relative !important;
   }
   
   .texto {
@@ -41,8 +36,10 @@
   .container {
     max-width: 1200px;
     margin: 0 auto;
-    padding: 10px 0;
+    padding: 20px;
     width: 100%;
+    height: auto !important;
+    overflow: visible !important;
   }
   
   .login-container {
@@ -445,13 +442,14 @@
     top: 0;
     left: 0;
     width: 100%;
-    background-color: linear-gradient(90deg, #11dadc, #0987d9);
+    background: linear-gradient(90deg, #11dadc, #0987d9);
     padding: 1rem 2rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
     z-index: 1000;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    height: 70px; /* Altura fixa para o navbar */
   }
   
   .navbar-custom .navbar-brand,
@@ -488,7 +486,11 @@
   
   /* Ajuste para quando a navbar estiver presente */
   body.with-navbar {
-    padding-top: 80px;
+    padding-top: 90px !important; /* Aumentado para dar mais espaço - valor maior que a altura do navbar */
+    display: block !important;
+    height: auto !important;
+    min-height: 100vh !important;
+    overflow-y: auto !important;
   }
   
   /* ===== FOOTER ===== */
@@ -596,9 +598,10 @@
   /* ===== MEDICO ===== */
   .div-medico {
     display: grid;
-    grid-template-columns: 0.8fr 1fr 0.4fr; /* Três colunas agora */
+    grid-template-columns: 0.8fr 1fr 0.4fr;
     gap: 30px;
     align-items: start;
+    margin-top: 20px; /* Espaço adicional no topo */
   }
   
   .foto-medico {
@@ -770,5 +773,4 @@
     overflow: visible;
     height: auto;
   }
-  
   
